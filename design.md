@@ -1,6 +1,6 @@
 # PS-Agents: Finding the Shortest Route for a Trailer from Nairobi to Kisumu
 
-**Group members:** (Salim Hatibu.Peter Atonga(169614).Nicole Momanyi(168320))
+**Group members:** (Salim Hatibu(190000).Peter Atonga(169614).Nicole Momanyi(168320))
 
 ---
 
