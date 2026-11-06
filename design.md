@@ -1,11 +1,11 @@
-PS-Agents: Finding the Shortest Route for a Trailer from Nairobi to Kisumu (Updated with Verified Distances)
+#PS-Agents: Finding the Shortest Route for a Trailer from Nairobi to Kisumu (Updated with Verified Distances)
 Group members: Salim Hatibu (190000), Peter Atonga (169614), Nicole Momanyi (168320)
 
-1. Designing the Agent
-1.1 The problem
+##1. Designing the Agent
+###1.1 The problem
 A trailer has to carry goods from Nairobi to Kisumu using Kenya's highways. Along the way it passes through the Nairobi region, the Central Highlands, the Rift Valley, and the Lake Victoria Basin. The agent is the system that decides which towns the trailer goes through and then drives it there. We want the trip to be as short as possible.
 
-1.2 PEAS
+###1.2 PEAS
 Part	In our trailer problem
 Performance measure	The main thing is the total distance from Nairobi to Kisumu, so shorter is better. Travel time, fuel, safety of the driver and cargo, and arriving on time also count.
 Environment	The highways and towns between Nairobi and Kisumu. Other vehicles and pedestrians, weather, potholes and roadworks, steep parts like the escarpment, weighbridges, and police checks.
@@ -13,7 +13,7 @@ Actuators	Steering, accelerator, brakes, gearbox, indicators and lights, and a s
 Sensors	GPS, cameras and radar, speedometer, odometer, fuel gauge, engine and tyre sensors, and a live feed of traffic and road closures.
 We treat this as a goal-based agent. It knows its goal which is Kisumu, it has a map of the roads, and it searches for the moves that reach the goal at the lowest cost.
 
-1.3 Environment properties
+###1.3 Environment properties
 We looked at the environment in two ways. On the map the agent is only planning a route. On the road it is actually driving.
 
 Property	Map level (planning)	Road level (driving)	Reason
@@ -26,8 +26,8 @@ Discrete or continuous	Discrete	Continuous	The towns and roads are a fixed, coun
 Known or unknown	Known	Mostly known	The agent knows which towns connect and how far apart they are, but not every local road condition.
 For the search part of this exercise, the environment is fully observable, single-agent, deterministic, sequential, static, discrete, and known. Graph search works well for that.
 
-2. The Graph and the Search Tree
-2.1 Abstraction
+##2. The Graph and the Search Tree
+###2.1 Abstraction
 A real journey has too much detail to plan with: thousands of bends, junctions, lanes, and speed changes. So we used abstraction, meaning we kept only what matters for choosing a route and dropped the rest.
 
 Real-world detail	What we did with it
@@ -50,7 +50,7 @@ flowchart LR
     NBI --> RV["Rift Valley<br/>Naivasha, Gilgil, Nakuru, Narok, Londiani, Kericho, Bomet, Eldoret"]
     CH --> RV
     RV --> LVB["Lake Victoria Basin<br/>Kisumu, Muhoroni, Kisii, Kakamega, Bungoma, Busia"]
-2.2 Problem formulation
+###2.2 Problem formulation
 States: the towns on the graph
 
 Initial state: Nairobi
@@ -63,7 +63,7 @@ Result of an action: the trailer is now in that neighbouring town
 
 Path cost: the total of the road distances in km
 
-2.3 Directed graph
+###2.3 Directed graph
 Highways can be driven both ways, so each road is drawn as two arrows, one in each direction, with the same distance. The numbers on the edges are updated, accurate distances in km.
 
 Code snippet
@@ -94,7 +94,7 @@ flowchart LR
     Kakamega <-->|60.5| Bungoma
     Bungoma <-->|59.2| Busia
     Busia <-->|113.0| Kisumu
-2.4 Distances (Updated Accurate Values)
+###2.4 Distances (Updated Accurate Values)
 From	To	Distance (km)
 Nairobi	Limuru	37.5
 Nairobi	Thika	46.1
@@ -122,7 +122,7 @@ Kakamega	Kisumu	50.9
 Kakamega	Bungoma	60.5
 Bungoma	Busia	59.2
 Busia	Kisumu	113.0
-2.5 Search tree
+###2.5 Search tree
 The root of the tree is Nairobi. Under each town we listed the towns the trailer can go to next, without allowing loops. The number next to each town is 
 𝑔
 (
@@ -175,8 +175,8 @@ Nairobi → Limuru → Naivasha → Gilgil → Nakuru → Londiani → Kericho �
 Nairobi → Narok → Bomet → Kericho → Muhoroni → Kisumu	398.5
 Nairobi → Narok → Bomet → Kisii → Kisumu	412.4
 Nairobi → Limuru → Naivasha → Gilgil → Nakuru → Londiani → Eldoret → Kakamega → Kisumu	481.0
-3. Finding the Best Route
-3.1 Method
+##3. Finding the Best Route
+###3.1 Method
 Using uniform-cost search (Dijkstra's algorithm), we expand nodes based on the lowest cumulative path cost 
 𝑔
 (
@@ -184,7 +184,7 @@ Using uniform-cost search (Dijkstra's algorithm), we expand nodes based on the l
 )
 g(n) from Nairobi. The search terminates when Kisumu is popped from the priority queue as the cheapest destination.
 
-3.2 Working
+###3.2 Working
 Step	Town expanded	Distance so far (g)	What we found / Updated Frontier
 1	Nairobi	0	Limuru 37.5, Thika 46.1, Narok 142.0
 2	Limuru	37.5	Naivasha 93.8
@@ -220,15 +220,15 @@ Kericho to Muhoroni	39.6	318.8
 Muhoroni to Kisumu	60.7	379.5
 The optimal path cost is 379.5 km.
 
-3.4 Analysis
+###3.4 Analysis
 Uniform-cost search successfully identified the minimal-cost route using the updated accurate segment measurements.
 
 The alternative southern route via Narok, Bomet, and Kericho totals 398.5 km (~19 km longer).
 
 Bypassing the Rift Valley through the Central Highlands (Thika → Murang'a → Nyeri) incurs higher cumulative edge costs, making it suboptimal for trailer freight routing.
 
-4. Evidence of Group Work
-4.1 Meeting minutes
+##4. Evidence of Group Work
+###4.1 Meeting minutes
 Date and time: 15/10/2026, 5:30 PM
 
 Where: Student Centre, Strathmore University
